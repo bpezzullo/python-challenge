@@ -17,17 +17,17 @@ with open("Resources/budget_data.csv") as csv_file:
                 inc = cur_row
             #else:
             elif dec > cur_row:
-                print(str(row[1]) + str(dec))
+            
                 greater_dec_proloss = row
                 dec = cur_row
             elif inc < cur_row:
-                print(str(row[1]))
+            
                 greater_inc_proloss = row
                 inc = cur_row
                 print("inc" + str(greater_inc_proloss))
-            print("the number is " + str(cur_row) + " inc " + str(inc) + " dec " + str(dec))
+            
             profit_loss_month_count += 1
-            print(str(profit_loss_month_count))
+            
             total_profit_loss = total_profit_loss + int(row[1])
         line_count += 1
     average_profit_loss = total_profit_loss / profit_loss_month_count
