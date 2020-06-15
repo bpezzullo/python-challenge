@@ -42,7 +42,7 @@ with open("Resources/election_data.csv") as csv_file:
     # Calculate the percentage
     for cand in Candidate_count:
 
-        Candidate_percent.append(int(cand)/total_votes * 100)
+        Candidate_percent.append(round(int(cand)/total_votes * 100,4))
     
     # close the csv file
     csv_file.close 
