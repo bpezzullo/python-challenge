@@ -88,7 +88,7 @@ winner = Candidate_count.index(max(Candidate_count))
 cand_formated = zip(Candidates,Candidate_percent, Candidate_count)
 
 # write the information to the file 'results'in the folder 'a'nalysis'
-f = open("analysis/results","w",newline='\n')
+f = open("analysis/results.txt","w",newline='\n')
 f.write("Election results \n")
 f.write("------------------------------- \n")
 f.write("Total Votes: " + str(total_votes) + "\n")
@@ -107,7 +107,7 @@ f.write("-------------------------------\n")
 f.close
 
 # Print the file
-f = open("analysis/results","r")
+f = open("analysis/results.txt","r")
 file_contents = f.read()
 print (file_contents)
     

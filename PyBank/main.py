@@ -104,7 +104,7 @@ inc_month = PFDate[Profloss.index(greater_inc_proloss)]
 dec_month = PFDate[Profloss.index(greater_dec_proloss)]
 
 # write the information to the file 'results'in the folder 'a'nalysis'
-f = open("analysis/results","w",newline='\n')
+f = open("analysis/results.txt","w",newline='\n')
 f.write("Financial Analysis \n")
 f.write("-------------------------------\n")
 f.write("Total Months: " + str(profit_loss_month_count) + "\n")
@@ -118,7 +118,7 @@ f.write("Greatest Decrease in Profits: " + dec_month + " ($" + str(greater_dec_p
 f.close
 
 # Print the file
-f = open("analysis/results","r")
+f = open("analysis/results.txt","r")
 file_contents = f.read()
 print (file_contents)
     
