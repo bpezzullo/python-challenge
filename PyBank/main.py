@@ -40,68 +40,64 @@ with open("Resources/budget_data.csv") as csv_file:
     csv_reader = csv.reader(csv_file,delimiter=',')
 
     # initialize the variables to 0 or empty for the lists
-    profit_loss_month_count = 0
-    # dec = 0
-    # inc = 0
-    total_profit_loss = 0
-    average_profit_loss = 0
-    PFDate = []
-    Profloss = []
+    profit_loss_month_count = 0                  # number of months
+    dec = 0                                      # storage of the greatest loss between 2 months
+    inc = 0                                      # storage of the greatest increase between 2 months
+    previous = 0                                 # temporary storage of the previous record when looping through the months
+    total_change = 0                             # total change
+    total_profit_loss = 0                        # total of the profit and loss
+    average_profit_loss = 0                      # storage of the average of the profit and loss change.
+    
 
     # Strip off the header
     header = next(csv_reader)
 
     for row in csv_reader:
-        # store the date into the list Date
-        PFDate.append(row[0])
 
-        # store the Profit loss in the list Profloss
-        Profloss.append(int(row[1]))
+        # Use programming logic, loop through all the entries check for the greatest increase, greatest decrease
+        # change.  Change is determined by taking the current entry and finding the difference from the previous 
+        # month.  For the first entry ignore the change.  Also keep track of the total change, total profit and loss
+        # plus the number of months being looked at. 
 
-        # second way of calculating the results.  Use programming logice to calculate the 
-        # min and max, plus count the entries and total the profits. I commented it out, but 
-        # left it to show 2 different ways to calculate the results.  It would depend on the 
-        # processing time to calculate between the two on which one is better.
+        # Calculate the change from the previous profit / loss.  
+        change = int(row[1]) - previous
 
-        # if profit_loss_month_count == 0:
-        #     # for the first row set the dec and inc variables to compare against
-        #     greater_dec_proloss = row
-        #     dec = int(row[1])
-        #     greater_inc_proloss = row
-        #     inc = int(row[1])
+        if profit_loss_month_count == 0:
+
+             # for the first row set the dec and inc variables to compare against
+            greater_dec_proloss = row
+            dec = int(row[1])
+            greater_inc_proloss = row
+            inc = int(row[1])
+            previous = int(row[1])
+            change = 0                                  # ignore the first profit / loss
+
         # for the other rows check to see if the profit is greater than the last max value
-        # elif dec > int(row[1]):
-        #     greater_dec_proloss = row
-        #     dec = int(row[1])
+        elif dec > change:
+            greater_dec_proloss = row
+            dec = change
+
         # if not greater check to see if it is the least or the biggest decrease
-        # elif inc < int(row[1]):
-        #     greater_inc_proloss = row
-        #     inc = int(row[1])
+        elif inc < change:
+            greater_inc_proloss = row
+            inc = change
         
-        # count the number of rows
-        # profit_loss_month_count += 1
+        # count the number of months
+        profit_loss_month_count += 1
 
         # sum the total profit_loss
-        # total_profit_loss = total_profit_loss + int(row[1])
+        total_profit_loss += int(row[1])
 
-# Calculate the average
-# average_profit_loss = total_profit_loss / profit_loss_month_count
+        # keep track of the total change
+        total_change += change
 
-# second method of calcaulating is using the functions to return the min, max, sum and len
-# not sure which method runs faster.
+        # store the profit / loss for next comparison
+        previous = int(row[1])
 
-# get the sum of the Profit and loss
-total_profit_loss = sum(Profloss)
-# get the number of rows in the spreadsheet outside of the header
-profit_loss_month_count = len(Profloss)
-# calculate the average
-average_profit_loss = total_profit_loss/profit_loss_month_count
-# find the min and max of the Profloss list
-greater_inc_proloss = max(Profloss) 
-greater_dec_proloss = min(Profloss)
-# once having the values get the month associated to each of the greatest increase or decrease
-inc_month = PFDate[Profloss.index(greater_inc_proloss)]
-dec_month = PFDate[Profloss.index(greater_dec_proloss)]
+            
+# calculate the average of the change which occurred between the profit_loss_months.  Since this is the 
+# difference there where one less change and there by the subtraction of 1.
+average_profit_loss = total_change/(profit_loss_month_count - 1)
 
 # write the information to the file 'results'in the folder 'a'nalysis'
 f = open("analysis/results.txt","w",newline='\n')
@@ -111,8 +107,8 @@ f.write("Total Months: " + str(profit_loss_month_count) + "\n")
 f.write("Total Profit / Loss: $" + str(total_profit_loss) + "\n")
 f.write("Average change: $" + str(round(average_profit_loss,2)) + "\n")
 
-f.write("Greatest Increast in Profits: " + inc_month + " ($" + str(greater_inc_proloss) + ")\n")
-f.write("Greatest Decrease in Profits: " + dec_month + " ($" + str(greater_dec_proloss) + ")\n")
+f.write("Greatest Increast in Profits: " + str(greater_inc_proloss[0]) + " ($" + str(inc) + ")\n")
+f.write("Greatest Decrease in Profits: " + str(greater_dec_proloss[0]) + " ($" + str(dec) + ")\n")
 
 # close the file and then use the file to display the results to the sreen
 f.close
